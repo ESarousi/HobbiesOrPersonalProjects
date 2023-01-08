@@ -1,0 +1,10 @@
+def get_bp_status(bp):
+    if bp < 90:
+        bp_status = 'Low'
+    elif 89 < bp < 120:
+        bp_status = 'Normal'
+    elif 119 < bp < 140:
+        bp_status = 'Borderline High'
+    elif 149 < bp:
+            bp_status = 'High'
+    print(bp_status)
