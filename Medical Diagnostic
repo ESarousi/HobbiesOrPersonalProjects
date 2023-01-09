@@ -8,3 +8,16 @@ def get_bp_status(bp):
     elif 149 < bp:
             bp_status = 'High'
     print(bp_status)
+
+def get_patient_status(patient):
+    age = get_patient_age()
+    sex = get_patient_sex()
+    allergies = get_patient_allergies()
+    c_complaint = get_chief_complaint()
+    complaints = get_complaints()
+    medications = get_medications()
+    height = get_patient_height()
+    weight = get_patient_weight()
+    bmi = get_bmi()
+    bp = get_bp_status()
+    bg = get_bg_status()
