@@ -1,18 +1,11 @@
 import random
 
-'''game aspects
-patient stats (name, age, sex, conscious level, blood pressure, pulse, blood sugar, height, weight, blood levels, etc.)
-taking vitals (updating info)
-prescribing medication (changing info)
-diagnostic tests (confirming diagnoses)
-diagnose patient (formal diagnosis. Three days of observation.)
-Event log'''
-
 P1 = {
+    'ID': 1,
     'Name': 'John Smith',
     'Age': 62,
     'Sex': 'Male',
-    'Allergies': 'Oxycodone',
+    'Allergies': ['Oxycodone'],
     'Reactions': 'Hives',
     'Chief Complaint': 'Vomiting',
     'Complaints': ['Abdominal Pain', 'Lethargy', 'Jaundice', 'Lack of Appetite', 'Dark Urine'],
@@ -24,10 +17,11 @@ P1 = {
      }
 
 P2 = {
+    'ID': 2,
     'Name': 'Sally Samson',
     'Age': 49,
     'Sex': 'Female',
-    'Allergies': None,
+    'Allergies': [None],
     'Reactions': None,
     'Chief Complaint': 'Trouble Breathing',
     'Complaints': ['Sore Throat', 'Congestion', 'Fatigue', 'Headache', 'Lost of Taste'],
@@ -42,120 +36,85 @@ Patient_List = [P1, P2]
 
 def game_begin():
     patient = random.choice(Patient_List)
-    print(patient)
-
-game_begin()
-
-def game_begin():
-    patient_select =
     def menu():
-        choice = input("What do you want to do? ")
+        choice = input('''What do you want to do? 
+        Your choices are:
+        "Talk to Patient"
+        "Prescribe Medication"
+        "Perform a Diagnostic Test"
+        "Perform Surgery"''')
 
-        if choice == "Talk to Patient":
-            patient_discussion()
-        if choice == "Prescribe Medication":
-            prescribe_medication()
-        if choice == "Perform a Diagnostic Test":
-            diagnostic_test()
-        if choice == "Perform Surgery":
-            perform_surgery()
-
-def patient_discussion():
-    choice = input("What do you want to do? ")
+        if choice.lower() == "talk to patient":
+            patient_discussion(patient, 0)
+        if choice.lower() == "prescribe medication":
+            prescribe_medication(patient)
+        if choice.lower() == "perform diagnostic test":
+            diagnostic_test(patient)
+        if choice.lower() == "perform surgery":
+            perform_surgery(patient)
+        else:
+            print("You've chosen an invalid action. Please try again. ")
+            menu()
+    menu()
     
-    if choice == "Ask the patient questions":
-        patient_question()
-    if choice == "Get the patient's current status":
-        get_patient_status()
+def patient_discussion(patient, q_count):
+    question = input('''What would you like to ask the patient? You can ask them for/about:
+    N = Their name.
+    A = Their age.
+    S = Their sex.
+    AL = Their allergies.
+    CC = The thing bothering them most.
+    C = Other symptoms they're experiencing.
+    W = Their weight.
+    H = Their height.
+    
+    Or type "main" to go back to the main screen. ''')
+    
+    while q_count < 3:
+        if question.lower() == "n":
+            print("My name is "+patient['Name'] + ". " + str(q_count))
+            print()
+            q_count += 1
+            patient_discussion(patient, q_count)
+        if question.lower() == "a":
+            print("I'm "+patient['Age'] + " years old. " + str(q_count))
+            print()
+            q_count += 1
+        if question.lower() == "s":
+            print("I'm a "+patient['Sex'] + ". " + str(q_count))
+            print()
+            q_count += 1
+            patient_discussion(patient, q_count)
+        if question.lower() == 'al':
+            try:
+                print("As far as I'm aware, I'm allergic to " + patient['Allergies'] + "." + str(q_count))
+                print()
+            except:
+                print("I'm not allergic to anything.")
+            q_count += 1
+        if question.lower() == "cc":
+            print("I'd say the biggest thing bothering me now is "+ patient['Chief Complaint'] + ". " + str(q_count))
+            q_count += 1
+            patient_discussion(patient, q_count)
+        if question.lower() == "c":
+            print("What symptoms I'm having? I'd say I'm experiencing "+ str(patient['Complaints']) +
+                  ". " + str(q_count))
+            print()
+            q_count += 1
+            patient_discussion(patient, q_count)
+        if question.lower() == "w":
+            print("Last time I weighed myself, I was somewhere around " +
+                  str(int(random.randint((patient['Weight'])*.9, (patient['Weight'])))) + ". " + str(q_count))
+            print()
+            q_count += 1
+            patient_discussion(patient, q_count)
+        else:
+            print("What the heck are you even asking me, doc?")
+            print()
+            q_count += 1
+            patient_discussion(patient, q_count)
+    if q_count >= 3:
+        print("Look, I'm done answering questions right now. Just get me better.")
+        patient_discussion(patient, q_count)
         
-
-def get_bp_status(bp):
-    if bp < 90:
-        bp_status = 'Low'
-    elif 89 < bp < 120:
-        bp_status = 'Normal'
-    elif 119 < bp < 140:
-        bp_status = 'Borderline High'
-    elif 149 < bp:
-            bp_status = 'High'
-    print(bp_status)
-
-def get_bg_status(bg, diabetes=False):
-    if bg < 70:
-            bg_status = 'Low'
-    if diabetes == True:
-        if 71 < bg < 180:
-            bg_status = 'Normal'
-        if bg > 179:
-            bg_status = 'High'
-    if diabetes == False:
-        if 71 < bg < 140:
-            bg_status = 'Normal'
-        if bg > 139:
-            bg_status = 'High'
-    print(bg_status)
-
-def get_bmi(height, weight):
-    bmi = round(int(weight)/(int(height)*int(height))*703, 3)
-    print(bmi)
-
-def get_patient_status(patient):
-    age = get_patient_age()
-    sex = get_patient_sex()
-    allergies = get_patient_allergies()
-    c_complaint = get_chief_complaint()
-    complaints = get_complaints()
-    medications = get_medications()
-    height = get_patient_height()
-    weight = get_patient_weight()
-    bmi = get_bmi()
-    bp = get_bp_status()
-    bg = get_bg_status()
-
-class patient:
-    def __init__(self, number, name, diagnosis, age, sex, allergies, c_complaint, complaints, medications,
-                 height, weight, bmi, bp, bg):
-        self.number = number
-        self.name = name
-        self.diagnosis = diagnosis
-        self.age = age
-        self.allergies = allergies
-        self.c_complaint = c_complaint
-        self.complaints = complaints
-        self.medications = medications
-        self.height = height
-        self.weight = weight
-        self.bmi = get_bmi(height, weight)
-        self.bp = bp
-        self.bg = bg
-        
-p1 = patient(1, 'Harold Ingham', 'Diabetes', '25', 'Male', 'Bee Stings', 'Distorted Vision',
-             ['Confusion', 'Weakness', 'Shaky'], 'Lisinopril', '70', '195', get_bmi(70, 195), 124, 55)
-
-get_bmi(61,157)
-
-type(p1.bmi)
-
-print(p1.bmi)
-
-def action():
-    diagnosis = 'diabetes'
-    blood_sugar = 50
-    patient_alive = True
-    while patient_alive != False:
-        question = input('''What would you like to do?
-        
-        Type C for doctor consult.
-        Type M to prescribe medication.
-        Type M to perform surgery.
-        Type T for diagnostic tests.
-        Type V for patient vitals.''')
-        if question.lower() == 'm':
-            medication = input("What kind of medication would you like to prescribe? ")
-            if medication == 'insulin' and blood_sugar < 60:
-                patient_alive == False
-        break
-    else:
-        print("Your patient is dead. There is nothing more you can do. Try again.")
-         
-action()
+game_begin()
